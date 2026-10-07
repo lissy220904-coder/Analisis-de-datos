@@ -1,0 +1,14 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Generar datos sintéticos realistas de satélites LEO (Perigeo X y Apogeo Y)
+np.random.seed(42)
+N = 1200
+
+# Perigeo centrado ~500 km y Apogeo correlacionado ligeramente mayor
+X = np.random.normal(loc=550, scale=180, size=N)
+X = np.clip(X, 200, 1800)  # Limitar rango LEO realista
+Y = X + np.random.exponential(scale=60, size=N) + 10
+
+print(f"✅ Datos cargados correctamente. Muestra: N = {len(X)} satélites LEO.")
