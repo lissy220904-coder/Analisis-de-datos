@@ -1,0 +1,50 @@
+# ---------------------------------------------------------
+# PUNTO 6: EVALUACIÓN EN x0 Y PROPAGACIÓN DE ERRORES CON BANDA DE CONFIANZA
+# ---------------------------------------------------------
+
+# 1. Definir un punto de evaluación x0 (en km)
+x0 = 600.0  # Perigeo elegido para la predicción
+
+# 2. Evaluación de la predicción y0 = m * x0 + b
+y0 = m * x0 + b
+
+# 3. Propagación formal de errores
+var_y0 = (x0**2) * (delta_m**2) + (delta_b**2) + 2 * x0 * cov_mb
+delta_y0 = np.sqrt(var_y0)
+
+print("=== EVALUACIÓN EN UN PUNTO Y PROPAGACIÓN DE ERRORES ===")
+print(f"Para un perigeo x0 = {x0:.1f} km:")
+print(f"  Apogeo predicho y0 = {y0:.2f} ± {delta_y0:.2f} km\n")
+
+# 4. Cálculo de la banda de incertidumbre a lo largo de todo el rango de X
+x_domain = np.linspace(min(X), max(X), 200)
+y_pred = m * x_domain + b
+
+# Incertidumbre punto a punto sobre la recta
+sigma_y_domain = np.sqrt((x_domain**2) * (delta_m**2) + (delta_b**2) + 2 * x_domain * cov_mb)
+
+# 5. Gráfica final con la banda de incertidumbre
+plt.figure(figsize=(8, 5))
+
+# Puntos de datos originales
+plt.scatter(X, Y, alpha=0.2, color='gray', s=15, label='Satélites LEO')
+
+# Recta de ajuste
+plt.plot(x_domain, y_pred, color='darkblue', lw=2, label=f'Ajuste: $y = {m:.2f}x + {b:.2f}$')
+
+# Banda de incertidumbre (± 1 sigma)
+plt.fill_between(x_domain, y_pred - sigma_y_domain, y_pred + sigma_y_domain, 
+                 color='lightblue', alpha=0.5, label=r'Banda de incertidumbre ($\pm 1\sigma$)')
+
+# Punto x0 evaluado con su barra de error
+plt.errorbar(x0, y0, yerr=delta_y0, fmt='o', color='red', capsize=6, elinewidth=2,
+             label=fr'Predicción en $x_0={x0:.0f}$ km: $y_0 = {y0:.1f} \pm {delta_y0:.1f}$ km')
+
+# Formato de la gráfica
+plt.title('Punto 6: Propagación Formal de Errores y Banda de Incertidumbre', fontsize=12, fontweight='bold')
+plt.xlabel('Perigeo $X$ (km)')
+plt.ylabel('Apogeo $Y$ (km)')
+plt.legend(loc='upper left')
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.show()
