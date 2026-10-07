@@ -1,0 +1,51 @@
+# ---------------------------------------------------------
+# PUNTO 5: ESTADÍSTICOS Y AJUSTE LINEAL POR MÍNIMOS CUADRADOS
+# ---------------------------------------------------------
+
+# 1. Parámetros estadísticos descriptivos
+mu_x, std_x = np.mean(X), np.std(X, ddof=1)
+mu_y, std_y = np.mean(Y), np.std(Y, ddof=1)
+
+# 2. Ajuste lineal por mínimos cuadrados: y = m*x + b
+# np.polyfit retorna la pendiente m, el intercepto b y la matriz de covarianza
+p, cov = np.polyfit(X, Y, 1, cov=True)
+m, b = p[0], p[1]
+
+# Errores (desviaciones estándar) de los parámetros m y b
+delta_m = np.sqrt(cov[0, 0])
+delta_b = np.sqrt(cov[1, 1])
+cov_mb = cov[0, 1]  # Covarianza entre m y b
+
+# 3. Imprimir resultados en pantalla
+print("=== PARÁMETROS ESTADÍSTICOS ===")
+print(f"Media de X (Perigeo):   mu_x = {mu_x:.2f} ± {std_x:.2f} km")
+print(f"Media de Y (Apogeo):    mu_y = {mu_y:.2f} ± {std_y:.2f} km\n")
+
+print("=== AJUSTE LINEAL (y = m*x + b) ===")
+print(f"Pendiente (m):          m = {m:.4f} ± {delta_m:.4f}")
+print(f"Intercepto (b):         b = {b:.2f} ± {delta_b:.2f} km")
+print(f"Covarianza Cov(m, b):   {cov_mb:.6f}")
+
+# 4. Graficar los datos, el centro de masa (medias) y la recta de ajuste
+plt.figure(figsize=(8, 5))
+
+# Puntos de datos
+plt.scatter(X, Y, alpha=0.25, color='gray', s=15, label='Satélites LEO')
+
+# Centro de masa (mu_x, mu_y) con barras de error (std_x, std_y)
+plt.errorbar(mu_x, mu_y, xerr=std_x, yerr=std_y, fmt='o', color='crimson', 
+             capsize=5, elinewidth=2, label=r'Centro de masa $(\mu_x \pm \sigma_x, \mu_y \pm \sigma_y)$')
+
+# Recta de ajuste lineal
+x_line = np.linspace(min(X), max(X), 100)
+y_line = m * x_line + b
+plt.plot(x_line, y_line, color='darkblue', lw=2, label=f'Ajuste: $y = {m:.2f}x + {b:.2f}$')
+
+# Formato de la gráfica
+plt.title('Punto 5: Ajuste Lineal por Mínimos Cuadrados', fontsize=12, fontweight='bold')
+plt.xlabel('Perigeo $X$ (km)')
+plt.ylabel('Apogeo $Y$ (km)')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.show()
