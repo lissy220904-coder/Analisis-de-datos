@@ -1,0 +1,24 @@
+# ---------------------------------------------------------
+# PUNTO 2: HISTOGRAMA DE UNA VARIABLE ALEATORIA (Perigeo X)
+# ---------------------------------------------------------
+
+# Calcular la media de la variable X
+mu_x = np.mean(X)
+
+plt.figure(figsize=(8, 4.5))
+
+# Graficar histograma
+plt.hist(X, bins=30, color='#1f77b4', edgecolor='black', alpha=0.8)
+
+# Agregar la línea de la media
+plt.axvline(mu_x, color='red', linestyle='--', linewidth=2, label=f'Media $\mu_x = {mu_x:.2f}$ km')
+
+# Personalizar gráfico
+plt.title('Punto 2: Histograma del Perigeo ($X$)', fontsize=12, fontweight='bold')
+plt.xlabel('Perigeo (km)')
+plt.ylabel('Frecuencia (Número de satélites)')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.5)
+
+# Mostrar la gráfica
+plt.show()
