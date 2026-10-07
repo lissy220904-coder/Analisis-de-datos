@@ -1,0 +1,18 @@
+# ---------------------------------------------------------
+# PUNTO 3: GRÁFICO DE DISPERSIÓN DE DOS VARIABLES (Perigeo X vs Apogeo Y)
+# ---------------------------------------------------------
+
+plt.figure(figsize=(7, 5))
+
+# Graficar dispersión (scatter plot)
+plt.scatter(X, Y, alpha=0.4, color='#1f77b4', edgecolors='none', s=20, label='Satélites LEO')
+
+# Personalización
+plt.title('Punto 3: Diagrama de Dispersión (Perigeo vs Apogeo)', fontsize=12, fontweight='bold')
+plt.xlabel('Perigeo $X$ (km)')
+plt.ylabel('Apogeo $Y$ (km)')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.5)
+
+# Mostrar la gráfica
+plt.show(
