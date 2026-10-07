@@ -1,0 +1,35 @@
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+
+# ---------------------------------------------------------
+# PUNTO 4: DISPERSIÓN CON PROYECCIÓN DE HISTOGRAMAS EN CADA EJE
+# ---------------------------------------------------------
+
+fig = plt.figure(figsize=(8, 8))
+gs = gridspec.GridSpec(4, 4)
+
+# Definir paneles: centro (dispersión), arriba (hist X), derecha (hist Y)
+ax_main = fig.add_subplot(gs[1:4, 0:3])
+ax_xhist = fig.add_subplot(gs[0, 0:3], sharex=ax_main)
+ax_yhist = fig.add_subplot(gs[1:4, 3], sharey=ax_main)
+
+# 1. Dispersión principal
+ax_main.scatter(X, Y, alpha=0.3, color='#1f77b4', s=15)
+ax_main.set_xlabel('Perigeo $X$ (km)', fontsize=11)
+ax_main.set_ylabel('Apogeo $Y$ (km)', fontsize=11)
+ax_main.grid(True, linestyle='--', alpha=0.5)
+
+# 2. Histograma de proyección en el eje X (arriba)
+ax_xhist.hist(X, bins=30, color='#6baed6', edgecolor='black', alpha=0.7)
+ax_xhist.tick_params(labelbottom=False)
+ax_xhist.set_ylabel('Frecuencia $X$')
+ax_xhist.grid(True, linestyle='--', alpha=0.5)
+
+# 3. Histograma de proyección en el eje Y (derecha)
+ax_yhist.hist(Y, bins=30, orientation='horizontal', color='#6baed6', edgecolor='black', alpha=0.7)
+ax_yhist.tick_params(labelleft=False)
+ax_yhist.set_xlabel('Frecuencia $Y$')
+ax_yhist.grid(True, linestyle='--', alpha=0.5)
+
+plt.suptitle('Punto 4: Proyección Marginal de $X$ e $Y$', fontsize=13, fontweight='bold', y=0.93)
+plt.show()
