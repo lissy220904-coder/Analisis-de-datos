@@ -1,0 +1,49 @@
+# Definir un rango de valores de x para evaluar la propagación en toda la recta
+x_line = np.linspace(min(X), max(X), 100)
+y_line = m * x_line + b
+
+# Propagación de error considerando la incertidumbre del ajuste
+# MÁS la dispersión natural de los datos (sigma_y_i) para que la banda sea visible
+delta_y_line = np.sqrt(
+    (x_line**2) * (delta_m**2) + (delta_b**2) + 2 * x_line * cov_mb
+    + sigma_y_i**2
+)
+
+# Gráfica del ajuste con su banda de error visible
+plt.figure(figsize=(7, 4.5))
+plt.scatter(
+    X,
+    Y,
+    alpha=0.25,
+    color="gray",
+    s=15,
+    label="Datos experimentales (Satélites LEO)",
+)
+plt.plot(
+    x_line,
+    y_line,
+    color="darkblue",
+    lw=2,
+    label=rf"Ajuste lineal ($\chi^2_{{red}} \approx {chi2_reducido:.2f}$)",
+)
+
+# Banda sombreada bien visible
+plt.fill_between(
+    x_line,
+    y_line - delta_y_line,
+    y_line + delta_y_line,
+    color="deepskyblue",
+    alpha=0.35,  # Un poco más opaca para que resalte perfecto
+    label=r"Banda de confianza / predicción",
+)
+
+plt.title(
+    "Ajuste Lineal con Banda de Confianza Visible",
+    fontsize=12,
+    fontweight="bold",
+)
+plt.xlabel("Perigeo X (km)")
+plt.ylabel("Apogeo Y (km)")
+plt.legend()
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.show()
