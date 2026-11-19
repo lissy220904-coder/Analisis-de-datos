@@ -1,0 +1,25 @@
+mu_y = np.mean(Y)
+counts_y, bin_edges_y = np.histogram(Y, bins=25)
+bin_centers_y = (bin_edges_y[:-1] + bin_edges_y[1:]) / 2
+errors_y = np.sqrt(counts_y)
+
+plt.figure(figsize=(7, 4))
+plt.bar(
+    bin_centers_y,
+    counts_y,
+    width=(bin_edges_y[1] - bin_edges_y[0]),
+    yerr=errors_y,
+    capsize=3,
+    color="#17becf",  # Tono turquesa/cian para el apogeo
+    edgecolor="black",
+    alpha=0.75,
+)
+plt.axvline(
+    mu_y, color="red", linestyle="--", linewidth=2, label=f"Media μ_y = {mu_y:.2f}"
+)
+plt.title("Histograma del Apogeo (Y) con Promedio y Errores")
+plt.xlabel("Apogeo (km)")
+plt.ylabel("Frecuencia")
+plt.legend()
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.show()
