@@ -1,0 +1,22 @@
+# Ajuste lineal por mínimos cuadrados con covarianza
+p, cov = np.polyfit(X, Y, 1, cov=True)
+m, b = p[0], p[1]
+delta_m = np.sqrt(cov[0, 0])
+delta_b = np.sqrt(cov[1, 1])
+cov_mb = cov[0, 1]
+
+# Cálculo de Chi-cuadrada (bondad de ajuste)
+Y_modelo = m * X + b
+residuals = Y - Y_modelo
+sigma_y_i = np.std(residuals, ddof=2)
+chi2 = np.sum(((Y - Y_modelo) / sigma_y_i) ** 2)
+df = len(X) - 2
+chi2_reducido = chi2 / df
+
+print("=== PARÁMETROS Y CHI-CUADRADA ===")
+print(
+    f"Ecuación de ajuste: y = ({m:.4f} ± {delta_m:.4f})x + ({b:.2f} ± {delta_b:.2f})"
+)
+print(f"Estadístico Chi²: {chi2:.4f}")
+print(f"Grados de libertad (df): {df}")
+print(f"Chi² Reducido: {chi2_reducido:.4f}")
